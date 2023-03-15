@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,14 +24,28 @@ public class MainActivity extends AppCompatActivity {
 
         AdaptadorPersonalizado miAdaptador = new AdaptadorPersonalizado(ListaPrincipalProductos);
 
+        miAdaptador.setOnItemClickListener(new AdaptadorPersonalizado.OnItemClickListener() {
+            @Override
+            public void onItemClick(Producto miProducto, int posicion) {
+                Toast.makeText(MainActivity.this, "HICE CLICK DESDE ACTIVITY"+ miProducto.getNombre(),Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onItemBtnEliminaClick(Producto miProducto, int posicion) {
+                ListaPrincipalProductos.remove(posicion);
+                miAdaptador.setListadoInformacion(ListaPrincipalProductos);
+
+            }
+        });
+
         rvListadoProductos.setAdapter(miAdaptador);
         rvListadoProductos.setLayoutManager(new LinearLayoutManager(this));
     }
     public void cargarDatos(){
-        Producto producto1 = new Producto("Computador HP", 8000000.0, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcompucentro.co%2Fcomputador-todo-en-uno-hp-dd1506la-21-5-pulgadas-intel-core-i3-ram-8gb-disco-ssd-256-gb-negro%2F&psig=AOvVaw11tkZk5Dt9MHnhZgIL_6_6&ust=1678917082856000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNiM0NWz3P0CFQAAAAAdAAAAABAE");
+        Producto producto1 = new Producto("Computador HP", 8000000.0, "https://img2.freepng.es/20180928/jvx/kisspng-hewlett-packard-hp-envy-laptop-2-in-1-pc-hp-spectr-refurbished-printers-refurbished-monitors-and-lc-5bae06a16044e3.4851795315381316173943.jpg");
 
-        Producto producto2 = new Producto("teclado DELL", 250000.0, "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fes%2Ffree-png-cnfmv&psig=AOvVaw0t6AMNQelNXmBq2TEJq5_w&ust=1678917403241000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCLiwvO203P0CFQAAAAAdAAAAABAE" );
-        Producto producto3 = new Producto("Mouse", 50000.0, "https://www.google.com/imgres?imgurl=https%3A%2F%2Fe7.pngegg.com%2Fpngimages%2F872%2F96%2Fpng-clipart-computer-mouse-logitech-g203-prodigy-optical-mouse-computer-keyboard-amazon-usb-headset.png&imgrefurl=https%3A%2F%2Fwww.pngegg.com%2Fes%2Fpng-wxjhz&tbnid=M_2pMDFv0UJ74M&vet=12ahUKEwiM356Ftdz9AhXGlYQIHQfBAFMQMygGegUIARDIAQ..i&docid=793NxXLtuZfoYM&w=900&h=759&q=mouse%20png&ved=2ahUKEwiM356Ftdz9AhXGlYQIHQfBAFMQMygGegUIARDIAQ");
+        Producto producto2 = new Producto("teclado DELL", 250000.0, "https://img2.freepng.es/20180602/opx/kisspng-computer-keyboard-dell-optiplex-laptop-computer-mo-5b12386f8e5704.567606171527920751583.jpg" );
+        Producto producto3 = new Producto("Mouse", 50000.0, "https://ibitsphil.com/wp-content/uploads/2017/11/Dell-WM126-Wireless-Optical-Mouse.png");
         ListaPrincipalProductos = new ArrayList<>() ;
 
         ListaPrincipalProductos.add(producto1);

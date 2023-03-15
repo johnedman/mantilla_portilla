@@ -3,11 +3,17 @@ package com.example.mantilla_portilla;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -15,8 +21,21 @@ public class AdaptadorPersonalizado extends RecyclerView.Adapter<AdaptadorPerson
 
     private ArrayList<Producto> listadoInformacion;
 
+    private OnItemClickListener onItemClickListener;
+
+    public void setListadoInformacion(ArrayList<Producto> listadoInformacion) {
+        this.listadoInformacion = listadoInformacion;
+        notifyDataSetChanged();
+    }
+
     public AdaptadorPersonalizado(ArrayList<Producto> listadoInformacion) {
         this.listadoInformacion = listadoInformacion;
+        this.onItemClickListener = null;
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -43,18 +62,50 @@ public class AdaptadorPersonalizado extends RecyclerView.Adapter<AdaptadorPerson
 
         private TextView tvNombre, tvPrecio;
         private ImageView ivProducto;
+
+        private Button btnEliminar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvNombre = itemView.findViewById(R.id.tv_item_nombre);
             tvPrecio = itemView.findViewById(R.id.tv_item_precio);
             ivProducto = itemView.findViewById(R.id.iv_item_imagen);
+            btnEliminar = itemView.findViewById(R.id.btn_item_eliminar);
         }
 
         public void enlazar(Producto miProducto){
             tvNombre.setText(miProducto.getNombre());
             tvPrecio.setText(miProducto.getPrecio().toString());
+            Picasso.get().load(miProducto.getUrlImagen()).error(R.drawable.ic_launcher_background).into(ivProducto);
+
+            if(onItemClickListener != null) {
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onItemClickListener.onItemClick(miProducto, getAdapterPosition());
+                    }
+                });
+
+
+                btnEliminar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onItemClickListener.onItemBtnEliminaClick(miProducto, getAdapterPosition());
+
+                    }
+                });
+            }
+
+
+
+
 
         }
+
+    }
+    public interface OnItemClickListener{
+        void onItemClick(Producto miProducto, int posicion);
+        void onItemBtnEliminaClick(Producto miProducto, int posicion);
     }
 }
