@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Producto> ListaPrincipalProductos;
     private RecyclerView rvListadoProductos;
 
-    @Override
+   @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

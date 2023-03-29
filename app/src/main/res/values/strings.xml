@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">mantilla_portilla</string>
-    <string name="listado">Listado de PRoductos</string>
+    <string name="listado">Listado de Productos</string>
     <string name="txt_detalle" />
 </resources>
