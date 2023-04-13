@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class IniciarSesionActivity extends AppCompatActivity {
 
     private EditText etUsuario, etPassword;
+    private SharedPreferences misPreferencias;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
         referenciar();
 
-        SharedPreferences misPreferencias = getSharedPreferences("tienda_app", MODE_PRIVATE);
+        misPreferencias = getSharedPreferences("tienda_app", MODE_PRIVATE);
 
         if (misPreferencias.getBoolean("logueado", false)==true){
             Intent miIntent = new Intent(this, MainActivity.class);
@@ -44,7 +45,9 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
         if(PASS.equals(passUser)&&USER.equals(userUser)) {
 
-            SharedPreferences.Editor myEditor
+            SharedPreferences.Editor myEditor = misPreferencias.edit();
+            myEditor.putBoolean("logueado", true);
+            myEditor.apply();
 
             Intent miIntent = new Intent(this, MainActivity.class);
             startActivity(miIntent);
