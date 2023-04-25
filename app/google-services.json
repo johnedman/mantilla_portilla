@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "959060231508",
+    "project_id": "mantilla-portilla",
+    "storage_bucket": "mantilla-portilla.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959060231508:android:cb5bc48ed8f985218cf4c1",
+        "android_client_info": {
+          "package_name": "com.example.mantilla_portilla"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "959060231508-rhbg2mu7d5ml595vtdub4ksidh586fj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyAQ4i_2Ntsj1xzlGsQPIzN6Xweeeishs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "959060231508-rhbg2mu7d5ml595vtdub4ksidh586fj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
