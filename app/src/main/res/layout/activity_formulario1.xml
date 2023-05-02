@@ -51,6 +51,7 @@
         android:id="@+id/btn_producto_crear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="clickGuardar"
         android:text="Crear"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

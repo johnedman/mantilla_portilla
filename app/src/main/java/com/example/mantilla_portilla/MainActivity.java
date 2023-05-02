@@ -1,5 +1,6 @@
 package com.example.mantilla_portilla;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,21 +11,44 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Producto> ListaPrincipalProductos;
+    private ArrayList<Producto> ListaPrincipalProductos = new ArrayList<>();
     private RecyclerView rvListadoProductos;
+    private AdaptadorPersonalizado miAdaptador;
 
    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(getString(R.string.listado));
+        setTitle(getString(R.string.txt_detalle));
         cargarDatos();
 
         rvListadoProductos = findViewById(R.id.rv_listado_productos);
+        miAdaptador = new AdaptadorPersonalizado(ListaPrincipalProductos);
+        miAdaptador.setOnItemClickListener(new AdaptadorPersonalizado.OnItemClickListener() {
+            @Override
+            public void onItemClick(Producto miProducto, int posicion) {
+
+                Intent intent = new Intent(MainActivity.this, DetalleActivity.class);
+                intent.putExtra("producto", miProducto);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemBtnEliminaClick(Producto miProducto, int posicion) {
+
+            }
+        });
 
         AdaptadorPersonalizado miAdaptador = new AdaptadorPersonalizado(ListaPrincipalProductos);
 
@@ -40,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemBtnEliminaClick(Producto miProducto, int posicion) {
+                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                firestore.collection("productos").document(miProducto.getId());
                 ListaPrincipalProductos.remove(posicion);
                 miAdaptador.setListadoInformacion(ListaPrincipalProductos);
 
@@ -50,15 +76,26 @@ public class MainActivity extends AppCompatActivity {
         rvListadoProductos.setLayoutManager(new LinearLayoutManager(this));
     }
     public void cargarDatos(){
-        Producto producto1 = new Producto("Computador HP", 8000000.0, "https://img2.freepng.es/20180928/jvx/kisspng-hewlett-packard-hp-envy-laptop-2-in-1-pc-hp-spectr-refurbished-printers-refurbished-monitors-and-lc-5bae06a16044e3.4851795315381316173943.jpg");
 
-        Producto producto2 = new Producto("teclado DELL", 250000.0, "https://img2.freepng.es/20180602/opx/kisspng-computer-keyboard-dell-optiplex-laptop-computer-mo-5b12386f8e5704.567606171527920751583.jpg" );
-        Producto producto3 = new Producto("Mouse", 50000.0, "https://ibitsphil.com/wp-content/uploads/2017/11/Dell-WM126-Wireless-Optical-Mouse.png");
-        ListaPrincipalProductos = new ArrayList<>() ;
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("productos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    for (DocumentSnapshot document: task.getResult()) {
+                        Producto productoAtrapado = document.toObject(Producto.class);
+                        productoAtrapado.setId(document.getId());
+                        ListaPrincipalProductos.add(productoAtrapado);
 
-        ListaPrincipalProductos.add(producto1);
-        ListaPrincipalProductos.add(producto2);
-        ListaPrincipalProductos.add(producto3);
+                    }
+                    miAdaptador.setListadoInformacion(ListaPrincipalProductos);
+                }else{
+                    Toast.makeText(MainActivity.this, "NO se pudo conectar al servidor", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
     }
 
     public void clickCerrarSesion(View view){
@@ -72,6 +109,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickAgregarProducto (View view){
-       startActivity(new Intent(this, FormularioActivity.class));
+       startActivity(new Intent(this, FormularioActivity1.class));
     }
 }

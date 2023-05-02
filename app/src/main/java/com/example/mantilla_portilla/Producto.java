@@ -1,11 +1,18 @@
 package com.example.mantilla_portilla;
 
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.PropertyName;
+
 import java.io.Serializable;
 
 public class Producto implements Serializable {
+
+    private String id;
     private String nombre;
     private Double precio;
     private String urlImagen;
+
+    public Producto(){}
 
     public Producto( String nombre, Double precio, String urlImagen){
         this.nombre = nombre;
@@ -13,6 +20,7 @@ public class Producto implements Serializable {
         this.urlImagen = urlImagen;
 
     }
+
     public String getNombre() {
         return nombre;
     }
@@ -29,11 +37,21 @@ public class Producto implements Serializable {
         this.precio = precio;
     }
 
+    @PropertyName("url_image")
+
     public String getUrlImagen() {
         return urlImagen;
     }
 
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
+    }
+    @Exclude
+    public String getId() {
+        return id;
+    }
+    @Exclude
+    public void setId(String id) {
+        this.id = id;
     }
 }
